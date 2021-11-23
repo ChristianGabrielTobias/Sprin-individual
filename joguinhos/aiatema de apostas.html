@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roleta Amiga</title>
+</head>
+<body>
+    <center>
+    <h1>NBA.bet</h1>
+    <span>Em qual número você vai apostar</span>
+    <input id="aposta" type="text" placeholder="Ex : 22"><br>
+
+    <span>Em qual Time você vai apostar</span>
+    <select id="Cor">
+        <option value="S">Selecione o time</option>
+        <option value="Lakers">Lakers</option>
+        <option value="Bulls">Bulls</option>
+        <option value="Pelicans">Pelicans</option>
+    </select><br>
+
+    <span>Qual valor da sua aposta por rodada</span>
+    <input id="valor" type="text" placeholder="Ex : 10"><br>
+    
+    <span>Quantas rodadas você quer participar</span>
+    <input id="rodadas" type="text" placeholder="Ex : 6"><br><br>
+
+    <button onclick="jogar()">Jogar</button><br><br>
+
+    <div id="msg1"></div><br>
+    <div id="msg"></div><br>
+    <div id="Resultado"></div>
+
+
+</body>
+</html>
+<script>
+    var cs1 = ''
+    ns1 = 0
+    var saldo = 0
+    function jogar() {
+        var ap = Number(aposta.value)
+        var c = Cor.value
+        var rd = Number (rodadas.value)
+        var v = Number(valor.value)
+        saldo = v
+
+        msg1.innerHTML = ""
+        msg.innerHTML = ""
+        Resultado.innerHTML = ""
+
+        if (ap <1 || ap > 36) {
+            alert("Digite um número para aposta válido")
+        }
+        else if (c == 'S') {
+            alert("Cor inválida")
+        }
+        else if(v < 1 || v > 100) {
+            alert("Digite um valor de aposta válido")
+        }
+        else if (rd <1) {
+            alert("Digite um número de rodadas válido")
+        }
+        else {
+            msg1.innerHTML = `Sua aposta de R$ ${v.toFixed(2)} por rodada foi no número ${ap} e no time dos ${c}`
+
+            for (var n = 1; n <= rd; n++) {
+
+                var cs = (Number(Math.random()*2)).toFixed()
+                var ns = (Number(Math.random()*36)).toFixed() 
+
+                if (cs == 0) {
+                    cs1 = "Lakers"
+                }
+                else if (cs == 1) {
+                    cs1 = "Bulls"
+                }
+                else if (cs == 2) {
+                    cs1 = "Pelicans"
+                }
+
+                if (cs1 == c && ns == ap ) {
+                    saldo += v*10
+                    msg.innerHTML += `${n}° sorteio - Time ${cs1}, Número ${ns} - Você ganhou R$ ${(v*10).toFixed(2)} e o seu saldo atual é de R$ ${saldo.toFixed(2)} <br>`
+                }
+
+                if (cs1 == c && ns != ap) {
+                    saldo += v*0.2 
+                    msg.innerHTML += `${n}° sorteio - Time ${cs1}, Número ${ns} - Você ganhou R$ ${(v*0.2).toFixed(2)} e o seu saldo atual é de R$ ${saldo.toFixed(2)} <br>`
+                }
+
+                if (ns == ap && cs1 != c) {
+                    saldo += v*3
+                    msg.innerHTML += `${n}° sorteio - Time ${cs1}, Número ${ns} - Você ganhou R$ ${(v*3).toFixed(2)} e o seu saldo atual é de R$ ${saldo.toFixed(2)} <br>`
+                }
+
+                if (ns != ap && cs1 != c) {
+                    saldo -= v
+                    msg.innerHTML += `${n}° sorteio - Time ${cs1}, Número ${ns} - Você perdeu R$ ${v.toFixed(2)} e o seu saldo atual é de R$ ${saldo.toFixed(2)} <br>`  
+                }
+                
+            }
+
+            if (saldo > 0) {
+                Resultado.innerHTML = `Parabéns, você ganhou R$ ${(saldo).toFixed(2)}, retire seu dinheiro no caixa`                
+            }
+            else if (saldo < 0) {
+                Resultado.innerHTML = `Infelizmente hoje você não está com sorte, vá ao caixa e pague R$ ${(saldo*(-1)).toFixed(2)}`
+            }
+            else{}
+        }
+    }
+</script>
