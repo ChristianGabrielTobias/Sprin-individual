@@ -22,5 +22,9 @@ router.post("/autenticar", function(req, res) {
 router.post("/filmes", function(req, res) {
     usuarioController.filmes(req, res);
 });
+
+router.get("/contagem", function(req, res){
+    usuarioController.contagem(req, res);
+});
   
 module.exports = router;
