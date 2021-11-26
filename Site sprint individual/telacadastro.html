@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,42 +8,44 @@
     <title>Cadastre-se</title>
     <script src="funcoes.js"></script>
 </head>
-<body>
-    <div
-    style="width: 100%; height: 700px; display: flex; justify-content: center; align-items: center; background-image: url(https://images5.alphacoders.com/467/thumb-1920-467394.jpg); background-size: cover; background-position: center;">
-    <div
-        style="background-color: rgba(128, 128, 128, 0.508); width: 25%; height: 400px; display: flex; justify-content: center; border-radius: 45px;">
-        <form id="form_cadastro" method="post" onsubmit="return cadastrar()">
-            <br><br><br>
-            <label style="color: white;" for="">USUARIO</label>
-            <input name="usuario" id="ipt_usuario" type="text">
-            <br><br><br>
-            <label style="color: white;" for="E-MAIL">E-MAIL</label>
-            <input name="email" id="ipt_email" type="email">
-            <div id="msg_1"></div>
-            <br><br>
-            <label style="color: white;" for="SENHA">SENHA</label>
-            <input name="senha" id="ipt_senha" type="password"><br><br><br>
 
-            <button
-                style="width: 250px; height: 30px; border: none; color: white; background-color: black ;"
-                onclick="teste()">LOGIN</button><br><br>
-                <p style="text-align: center; color: white;">Faça o logon clicando <a style="color: white;" href="telalogin.html">AQUI</a></p>
-                <div id="div_aguardar" class="loading-div" style="display: none; width: 30%;">
-                    <img src="./assets/circle-loading.gif" id="loading-gif">
-                </div>
+<body onload="total()">
+    <div>
+        Total de Cadastro : <b id="m1"></b>
+    </div>
+    <div
+        style="width: 100%; height: 700px; display: flex; justify-content: center; align-items: center; background-image: url(https://images5.alphacoders.com/467/thumb-1920-467394.jpg); background-size: cover; background-position: center;">
+        <div
+            style="background-color: rgba(0, 0, 0, 0.508); width: 30%; height: 400px; display: flex; justify-content: center; border-radius: 45px; ">
+            <form id="form_cadastro" method="post" onsubmit="return cadastrar()">
+                <br><br><br>
+                <label style="color: white; font-weight: bolder;" for="">USUARIO:</label>
+                <input name="usuario" id="ipt_usuario" type="text">
+                <br><br><br>
+                <label style="color: white; font-weight: bolder;" for="E-MAIL">E-MAIL:</label>
+                <input name="email" id="ipt_email" type="email">
+                <div id="msg_1"></div>
+                <br><br>
+                <label style="color: white; font-weight: bolder;" for="SENHA">SENHA:</label>
+                <input name="senha" id="ipt_senha" type="password"><br><br><br>
+
+                <button style="width: 250px; height: 30px; border: none; color: white; background-color: black ;"
+                    onclick="teste()">CADASTRAR</button><br><br>
+                <p style="text-align: center; color: white;">Faça o login clicando <a style="color: white;"
+                        href="telalogin.html">AQUI</a></p>
+
 
                 <div id="div_erros_login">
-                    
+
                 </div>
-        </form>
+            </form>
+        </div>
     </div>
-</div>
 
 </body>
+
 </html>
 <script>
-
     function limparFormulario() {
         document.getElementById("form_cadastro").reset();
     }
@@ -57,27 +60,27 @@
         var senha = formulario.get("senha");
 
         if (usuario == "" || email == "" || senha == "") {
-            
+
             window.alert("Preencha todos os campos para prosseguir!");
-            if (usuario == "")  {
+            if (usuario == "") {
                 console.log('usuario está em branco')
             }
-            if (email == "" )  {
+            if (email == "") {
                 console.log('email está em branco')
             }
-            if (senha == "" )  {
+            if (senha == "") {
                 console.log('senha está em branco')
             }
             finalizarAguardar();
             return false;
         }
-        
+
         if (email.indexOf("@") == -1 || email.indexOf(".com") == -1) {
             window.alert("E-mail inválido! Verifique e tente novamente.");
             finalizarAguardar();
             return false;
         }
-        
+
 
         fetch("/usuarios/cadastrar", {
             method: "POST",
@@ -92,7 +95,7 @@
                 limparFormulario();
                 finalizarAguardar();
             } else {
-                throw("Cadastro não realizado!");
+                throw ("Cadastro não realizado!");
             }
         }).catch(function (resposta) {
             console.log(`#ERRO: ${resposta}`);
@@ -102,4 +105,35 @@
         return false;
     }
 
+    function total() {
+        fetch("/usuarios/listar", {
+            method: "GET",
+            body: formulario
+        }).then(function (resposta) {
+
+            console.log("resposta: ", resposta);
+
+            if (resposta.ok) {
+                console.log(resposta);
+
+                resposta.json().then(json => {
+                    console.log(json);
+                    console.log(JSON.stringify(json));
+
+                    m1.innerHTML = `${json.length}`
+
+
+                });
+
+
+            } else {
+                throw ("Cadastro não realizado!");
+            }
+        }).catch(function (resposta) {
+            console.log(`#ERRO: ${resposta}`);
+            finalizarAguardar();
+        });
+
+        return false;
+    }
 </script>
