@@ -63,6 +63,8 @@ function cadastrar(req, res) {
     var usuario = req.body.usuario;
     var email = req.body.email;
     var senha = req.body.senha;
+    var time = req.body.time
+    
 
     if (usuario == undefined) {
         res.status(400).send("Seu usuario está undefined!");
@@ -70,9 +72,11 @@ function cadastrar(req, res) {
         res.status(400).send("Seu email está undefined!");
     } else if (senha == undefined) {
         res.status(400).send("Sua senha está undefined!");
-    }
+    } else if (time == undefined) {
+        res.status(400).send("Seu time está undefined!");
+    } 
      else {
-        usuarioModel.cadastrar(usuario, email, senha)
+        usuarioModel.cadastrar(usuario, email, senha, time)
         .then(
             function (resultado) {
                 res.json(resultado);
@@ -89,6 +93,7 @@ function cadastrar(req, res) {
         );
     }
 }
+//função para metrica
 function contagem(req, res) {
     usuarioModel.contagem()
     .then(function (resultado) {

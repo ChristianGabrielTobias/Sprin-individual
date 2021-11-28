@@ -7,34 +7,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastre-se</title>
     <script src="funcoes.js"></script>
+    <link rel="icon" href="https://assets.materialup.com/uploads/347c48be-3ed3-4e80-87a0-3353405f0239/0x0ss-85.jpg">
 </head>
 
 <body onload="total()">
-  
+
     <div
         style="width: 100%; height: 700px; display: flex; justify-content: center; align-items: center; background-image: url(https://images5.alphacoders.com/467/thumb-1920-467394.jpg); background-size: cover; background-position: center;">
-       
+
         <div
-        
             style="background-color: rgba(0, 0, 0, 0.508); width: 30%; height: 400px; display: flex; justify-content: center; border-radius: 45px; align-items: center; ">
             <form id="form_cadastro" method="post" onsubmit="return cadastrar()">
                 <br><br>
-                <div id="div_total" style="color: white; text-shadow: black 2px 2px; text-align: center; font-size: 30px;">
-        
+                <div id="div_total"
+                    style="color: white; text-shadow: black 2px 2px; text-align: center; font-size: 30px;">
                 </div>
                 <br><br>
-                <label style="color: white; font-weight: bolder;" for="">USUARIO:</label>
+                <label style="color: white; font-weight: bolder;" for="">USUARIO:</label><br>
                 <input name="usuario" id="ipt_usuario" type="text">
-                <br><br><br>
-                <label style="color: white; font-weight: bolder;" for="E-MAIL">E-MAIL:</label>
+                <br><br>
+                <label style="color: white; font-weight: bolder;" for="E-MAIL">E-MAIL:</label><br>
                 <input name="email" id="ipt_email" type="email">
                 <div id="msg_1"></div>
-                <br><br>
-                <label style="color: white; font-weight: bolder;" for="SENHA">SENHA:</label>
-                <input name="senha" id="ipt_senha" type="password"><br><br><br>
-
+                <br>
+                
+                <label style="color: white; font-weight: bolder;" for="SENHA">SENHA:</label><br>
+                <input name="senha" id="ipt_senha" type="password"><br><br>
+                <!-- adicioando o campo time no cadastro -->
+                <label style="font-weight: bolder; color: white;" for="">Selecione seu time do coração:</label><br>
+                <select style="width: 100%;" name="time" id="time">
+                    <option value="--">--</option>
+                    <option value="1">Chicago Bulls</option>
+                    <option value="2">Los Angeles Lakers</option>
+                    <option value="3">Miami Heat</option>
+                    <option value="4">Boston Celtics</option>
+                    <option value="6">Golden States</option>
+                    <option value="7">Hornets</option>
+                </select><br><br>
+                <!-- fim da adção -->
                 <button style="width: 250px; height: 30px; border: none; color: white; background-color: black ;"
                     onclick="teste()">CADASTRAR</button><br><br>
+
+                <div id="div_aguardar" style="display: block; width: 100%;">
+                    <img id="loading-gif">
+                </div>
+
                 <p style="text-align: center; color: white;">Faça o login clicando <a style="color: white;"
                         href="telalogin.html">AQUI</a></p>
 
@@ -42,11 +59,9 @@
                 <div id="div_erros_login">
 
                 </div>
-                <div  id="div_aguardar" style="display: none"> 
-                    <img style="height: 20px; width: 20px; align-items: center;" src="https://c.tenor.com/I6kN-6X7nhAAAAAj/loading-buffering.gif" id="loading-gif">
-                </div>
+
             </form>
-            
+
         </div>
     </div>
 
@@ -66,6 +81,10 @@
         var usuario = formulario.get("usuario");
         var email = formulario.get("email");
         var senha = formulario.get("senha");
+        var time = formulario.get("time");
+
+
+
 
         if (usuario == "" || email == "" || senha == "") {
 
@@ -78,6 +97,9 @@
             }
             if (senha == "") {
                 console.log('senha está em branco')
+            }
+            if (time == "") {
+                console.log('escolha um time')
             }
             finalizarAguardar();
             return false;
@@ -112,15 +134,15 @@
 
         return false;
     }
-
-    fetch("/usuarios/contagem").then(function(resposta){
-        resposta.json().then(function(json){
+    // metricas
+    fetch("/usuarios/contagem").then(function (resposta) {
+        resposta.json().then(function (json) {
             console.log(json)
-            div_total.innerHTML = `Total de Cadastro : <b id="m1">${json[0].qtd}</b>`
+            div_total.innerHTML = `Usuarios cadastrados:<b id="m1">${json[0].qtd}</b>`
         })
-    }).catch(function(erro){
+    }).catch(function (erro) {
         console.log(erro)
     })
-   
-           
+
+
 </script>
